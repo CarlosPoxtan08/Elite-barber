@@ -1,59 +1,146 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+Elite Barber - Sistema de Gestión de Barbería
+Sistema web desarrollado en Laravel para la gestión de una barbería, incluyendo administración de usuarios, roles, citas y estadísticas.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Descripción
+Elite Barber es una aplicación web completa que permite gestionar una barbería con las siguientes funcionalidades:
 
-## About Laravel
+Autenticación de usuarios con registro y login
+Gestión de roles (admin, staff, client)
+Gestión de usuarios con CRUD completo
+Gestión de citas con sistema completo de reservas
+Panel de administración con estadísticas y reportes
+Interfaz pública para que los clientes agenden citas
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Características Principales
+Autenticación
+Registro de nuevos usuarios
+Login con validación
+Logout seguro
+Redirección automática según rol
+Gestión de Roles
+Admin: Acceso completo al sistema
+Staff: Gestión de citas y servicios
+Client: Agendamiento de citas y visualización de información personal
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Gestión de Usuarios
+Listado paginado de usuarios
+Crear nuevos usuarios con asignación de rol
+Editar información de usuarios
+Activar/Desactivar usuarios (soft delete)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Gestión de Citas
+Crear, editar, eliminar citas
+Asignar barberos a citas
+Estados: pendiente, confirmada, cancelada, completada
+Servicios: corte, barba, combo
+Requisitos
+PHP >= 8.2
+Composer
+MySQL o PostgreSQL
+Node.js y NPM (para assets)
+Instalación
+Clonar el repositorio
+git clone https://github.com/tu-usuario/lionsbarber.git
+cd lionsbarber
+Instalar dependencias
+composer install
+npm install
+Configurar el archivo .env
+cp .env.example .env
+php artisan key:generate
+Editar el archivo .env con tus credenciales de base de datos:
 
-## Learning Laravel
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=barber_db
+DB_USERNAME=root
+DB_PASSWORD=
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Ejecutar migraciones y seeders
+php artisan migrate --seed
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Compilar assets (opcional)
+npm run build
 
-## Laravel Sponsors
+Iniciar el servidor
+php artisan serve
+La aplicación estará disponible en http://localhost:8000
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Usuarios de Prueba
+Después de ejecutar los seeders, puedes usar las siguientes credenciales:
 
-### Premium Partners
+Administrador
+Email: admin@demo.com
+Contraseña: password
+Staff
+Email: staff@demo.com
+Contraseña: password
+Cliente
+Email: client@demo.com
+Contraseña: password
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Estructura del Proyecto
+LionsBarber/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/
+│   │   │   ├── AdminController.php
+│   │   │   ├── CitaController.php
+│   │   │   └── ProfileController.php
+│   │   └── Middleware/
+│   │       └── IsAdmin.php
+│   └── Models/
+│       ├── User.php
+│       ├── Role.php
+│       └── Cita.php
+├── database/
+│   ├── migrations/
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── RoleSeeder.php
+│       └── RolesAndUsersSeeder.php
+├── resources/
+│   └── views/
+│       ├── admin/
+│       ├── citas.blade.php
+│       └── layouts/
+└── routes/
+    └── web.php
+Tecnologías Utilizadas
+Laravel 11: Framework PHP
+Laravel Jetstream StarterKit: Autenticación
+Tailwind CSS: Estilos
+Alpine.js: Interactividad
+Chart.js: Gráficas y estadísticas
+SweetAlert2: Notificaciones
+Funcionalidades Técnicas
+Migraciones para todas las tablas
+Seeders para datos iniciales (roles y usuarios de prueba)
+Soft deletes para usuarios
+Middleware de autenticación y autorización
+Rutas organizadas con grupos y prefijos
+Controladores tipo resource
+Vistas Blade organizadas
+Validación de formularios
+Paginación en listados
+Rutas Principales
+Públicas
+/ - Página de inicio
+/citas - Agendar citas
+/barberos - Ver barberos
+/login - Iniciar sesión
+/register - Registrarse
+Administración (requiere autenticación y rol admin)
+/admin/dashboard - Panel principal
+/admin/users - Gestión de usuarios
+/admin/citas - Gestión de citas
+/admin/estadisticas - Estadísticas y reportes
+Contribuir
+Las contribuciones son bienvenidas. Por favor:
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Fork el proyecto
+Crea una rama para tu feature (git checkout -b feature/AmazingFeature)
+Commit tus cambios (git commit -m 'Add some AmazingFeature')
+Push a la rama (git push origin feature/AmazingFeature)
+Abre un Pull Request
