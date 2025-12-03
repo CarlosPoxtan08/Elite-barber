@@ -26,13 +26,13 @@
 
         <div class="mb-4">
             <label class="block text-gray-700">Barbero (Opcional)</label>
-            <select wire:model="barber_id" class="w-full border rounded px-4 py-2">
+            <select wire:model="staff_id" class="w-full border rounded px-4 py-2">
                 <option value="">Cualquiera</option>
                 @foreach($barbers as $barber)
                     <option value="{{ $barber->id }}">{{ $barber->name }}</option>
                 @endforeach
             </select>
-            @error('barber_id') <span class="text-red-500">{{ $message }}</span> @enderror
+            @error('staff_id') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
         <div class="mb-4">
@@ -41,7 +41,7 @@
             @error('scheduled_at') <span class="text-red-500">{{ $message }}</span> @enderror
         </div>
 
-        @if(auth()->user()->hasRole('admin'))
+        @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('staff'))
             <div class="mb-4">
                 <label class="block text-gray-700">Estado</label>
                 <select wire:model="status" class="w-full border rounded px-4 py-2">

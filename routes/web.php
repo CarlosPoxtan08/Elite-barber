@@ -18,8 +18,8 @@ Route::middleware([
         if (auth()->user()->hasRole('admin')) {
             return redirect()->route('admin.dashboard');
         }
-        if (auth()->user()->hasRole('barber')) {
-            return redirect()->route('barber.dashboard');
+        if (auth()->user()->hasRole('staff')) {
+            return redirect()->route('staff.dashboard');
         }
         return redirect()->route('client.dashboard');
     })->name('dashboard');
@@ -49,5 +49,6 @@ Route::middleware([
 
         Route::get('/appointments', \App\Livewire\Appointments\Index::class)->name('appointments.index');
         Route::get('/appointments/create', \App\Livewire\Appointments\Form::class)->name('appointments.create');
+        Route::get('/appointments/{appointment}/edit', \App\Livewire\Appointments\Form::class)->name('appointments.edit');
     });
 });

@@ -88,8 +88,8 @@
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-6">
                                 <div class="text-center bg-white rounded-lg p-4 shadow-sm">
-                                    <p class="text-xs text-gray-500 mb-1">{{ $appointment->scheduled_at->format('d') }}</p>
-                                    <p class="text-lg font-bold text-gray-800">{{ $appointment->scheduled_at->format('M') }}</p>
+                                    <p class="text-xs text-gray-500 mb-1">{{ $appointment->scheduled_at->locale('es')->isoFormat('D') }}</p>
+                                    <p class="text-lg font-bold text-gray-800">{{ $appointment->scheduled_at->locale('es')->isoFormat('MMM') }}</p>
                                     <p class="text-sm gold-accent font-semibold mt-1">
                                         {{ $appointment->scheduled_at->format('H:i') }}</p>
                                 </div>
@@ -163,7 +163,7 @@
                         </div>
                         <div class="flex items-center text-sm text-gray-600">
                             <i class="far fa-calendar mr-2 gold-accent"></i>
-                            <span>{{ $appointment->scheduled_at->format('d/m/Y H:i') }}</span>
+                            <span>{{ $appointment->scheduled_at->locale('es')->isoFormat('D/MM/Y H:mm') }}</span>
                         </div>
                     </div>
                 @endforeach

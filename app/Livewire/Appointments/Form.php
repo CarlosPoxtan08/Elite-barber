@@ -12,7 +12,7 @@ class Form extends Component
 {
     public ?Appointment $appointment = null;
     public $client_id;
-    public $barber_id;
+    public $staff_id;
     public $service_id;
     public $scheduled_at;
     public $status = 'pending';
@@ -20,9 +20,16 @@ class Form extends Component
     public function mount(Appointment $appointment = null)
     {
         if ($appointment && $appointment->exists) {
+            if (auth()->user()->hasRole('client') && $appointment->client_id !== auth()->id()) {
+                abort(403);
+            }
+            if (auth()->user()->hasRole('staff') && $appointment->staff_id !== auth()->id()) {
+                abort(403);
+            }
+
             $this->appointment = $appointment;
             $this->client_id = $appointment->client_id;
-            $this->barber_id = $appointment->barber_id;
+            $this->staff_id = $appointment->staff_id;
             $this->service_id = $appointment->service_id;
             $this->scheduled_at = $appointment->scheduled_at->format('Y-m-d\TH:i');
             $this->status = $appointment->status;
@@ -38,12 +45,14 @@ class Form extends Component
         $rules = [
             'service_id' => 'required|exists:services,id',
             'scheduled_at' => 'required|date|after:now',
-            'barber_id' => 'nullable|exists:users,id',
+            'staff_id' => 'nullable|exists:users,id',
         ];
 
+        if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('staff')) {
+            $rules['status'] = 'required|in:pending,confirmed,cancelled,completed';
+        }
         if (auth()->user()->hasRole('admin')) {
             $rules['client_id'] = 'required|exists:users,id';
-            $rules['status'] = 'required|in:pending,confirmed,cancelled,completed';
         }
 
         $this->validate($rules);
@@ -51,11 +60,14 @@ class Form extends Component
         $data = [
             'service_id' => $this->service_id,
             'scheduled_at' => $this->scheduled_at,
-            'barber_id' => $this->barber_id ?: null,
+            'staff_id' => $this->staff_id ?: null,
         ];
 
         if (auth()->user()->hasRole('admin')) {
             $data['client_id'] = $this->client_id;
+        }
+
+        if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('staff')) {
             $data['status'] = $this->status;
         } else {
             if (!$this->appointment) {
@@ -71,8 +83,8 @@ class Form extends Component
         }
 
         $redirectRoute = auth()->user()->hasRole('admin') ? 'admin.appointments.index' : 'client.appointments.index';
-        if (auth()->user()->hasRole('barber')) {
-            $redirectRoute = 'barber.appointments.index';
+        if (auth()->user()->hasRole('staff')) {
+            $redirectRoute = 'staff.appointments.index';
         }
 
         return redirect()->route($redirectRoute);
@@ -88,7 +100,7 @@ class Form extends Component
         }
 
         $barbers = User::whereHas('roles', function ($q) {
-            $q->where('slug', 'barber');
+            $q->where('slug', 'staff');
         })->get();
 
         return view('livewire.appointments.form', [

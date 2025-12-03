@@ -16,7 +16,7 @@
             </div>
             <div class="text-right">
                 <p class="text-sm text-gray-500">Última conexión</p>
-                <p class="text-lg font-semibold text-gray-800">{{ now()->format('d M Y, H:i') }}</p>
+                <p class="text-lg font-semibold text-gray-800">{{ now()->locale('es')->isoFormat('D MMM Y, H:mm') }}</p>
             </div>
         </div>
     </div>
@@ -84,9 +84,9 @@
             <div class="space-y-4">
                 @foreach($todayAppointments as $appointment)
                     <div class="bg-gradient-to-r from-gray-50 to-white p-5 rounded-xl border-l-4 shadow-sm hover:shadow-md transition
-                                        {{ $appointment->status === 'pending' ? 'border-yellow-500' : '' }}
-                                        {{ $appointment->status === 'confirmed' ? 'border-green-500' : '' }}
-                                        {{ $appointment->status === 'completed' ? 'border-blue-500' : '' }}">
+                                                {{ $appointment->status === 'pending' ? 'border-yellow-500' : '' }}
+                                                {{ $appointment->status === 'confirmed' ? 'border-green-500' : '' }}
+                                                {{ $appointment->status === 'completed' ? 'border-blue-500' : '' }}">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-6">
                                 <div class="text-center bg-white rounded-lg p-3 shadow-sm">
@@ -105,10 +105,10 @@
                             <div class="flex items-center space-x-3">
                                 <span
                                     class="px-4 py-2 rounded-full text-sm font-bold
-                                                    {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                                    {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
-                                                    {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
-                                                    {{ $appointment->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
+                                                            {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                                            {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
+                                                            {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                            {{ $appointment->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
                                     {{ ucfirst($appointment->status) }}
                                 </span>
 
@@ -162,10 +162,10 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach($upcomingAppointments as $appointment)
                     <div class="bg-white border-2 p-5 rounded-xl shadow-sm hover:shadow-md transition
-                                {{ $appointment->status === 'pending' ? 'border-yellow-300' : '' }}
-                                {{ $appointment->status === 'confirmed' ? 'border-green-300' : '' }}
-                                {{ $appointment->status === 'completed' ? 'border-blue-300' : '' }}
-                                {{ $appointment->status === 'cancelled' ? 'border-red-300' : '' }}">
+                                        {{ $appointment->status === 'pending' ? 'border-yellow-300' : '' }}
+                                        {{ $appointment->status === 'confirmed' ? 'border-green-300' : '' }}
+                                        {{ $appointment->status === 'completed' ? 'border-blue-300' : '' }}
+                                        {{ $appointment->status === 'cancelled' ? 'border-red-300' : '' }}">
                         <div class="flex justify-between items-start mb-3">
                             <div>
                                 <p class="font-bold text-gray-800 text-lg">{{ $appointment->client->name }}</p>
@@ -175,10 +175,10 @@
                                 </p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-bold
-                                        {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                        {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
-                                        {{ $appointment->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
+                                                {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                                {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
+                                                {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                {{ $appointment->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
                                 {{ ucfirst($appointment->status) }}
                             </span>
                         </div>
@@ -186,7 +186,7 @@
                             <i class="far fa-calendar mr-2 gold-accent"></i>
                             <span class="font-semibold">{{ $appointment->scheduled_at->format('d/m/Y H:i') }}</span>
                         </div>
-                        
+
                         <!-- Action Buttons -->
                         <div class="flex gap-2 mt-3">
                             @if($appointment->status === 'pending')

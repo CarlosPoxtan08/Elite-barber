@@ -15,8 +15,8 @@ class Index extends Component
         $user = auth()->user();
         $query = Appointment::with(['client', 'barber', 'service'])->latest();
 
-        if ($user->hasRole('barber')) {
-            $query->where('barber_id', $user->id);
+        if ($user->hasRole('staff')) {
+            $query->where('staff_id', $user->id);
         } elseif ($user->hasRole('client')) {
             $query->where('client_id', $user->id);
         }
