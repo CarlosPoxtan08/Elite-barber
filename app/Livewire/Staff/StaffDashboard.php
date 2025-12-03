@@ -72,4 +72,15 @@ class StaffDashboard extends Component
 
         session()->flash('message', 'Cita completada exitosamente.');
     }
+
+    public function cancelAppointment($id)
+    {
+        $appointment = Appointment::where('id', $id)
+            ->where('staff_id', auth()->id())
+            ->firstOrFail();
+
+        $appointment->update(['status' => 'cancelled']);
+
+        session()->flash('message', 'Cita cancelada exitosamente.');
+    }
 }

@@ -84,9 +84,9 @@
             <div class="space-y-4">
                 @foreach($todayAppointments as $appointment)
                     <div class="bg-gradient-to-r from-gray-50 to-white p-5 rounded-xl border-l-4 shadow-sm hover:shadow-md transition
-                                {{ $appointment->status === 'pending' ? 'border-yellow-500' : '' }}
-                                {{ $appointment->status === 'confirmed' ? 'border-green-500' : '' }}
-                                {{ $appointment->status === 'completed' ? 'border-blue-500' : '' }}">
+                                        {{ $appointment->status === 'pending' ? 'border-yellow-500' : '' }}
+                                        {{ $appointment->status === 'confirmed' ? 'border-green-500' : '' }}
+                                        {{ $appointment->status === 'completed' ? 'border-blue-500' : '' }}">
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-6">
                                 <div class="text-center bg-white rounded-lg p-3 shadow-sm">
@@ -103,22 +103,41 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-3">
-                                <span class="px-4 py-2 rounded-full text-sm font-bold
-                                            {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
-                                            {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
-                                            {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}">
+                                <span
+                                    class="px-4 py-2 rounded-full text-sm font-bold
+                                                    {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                                    {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
+                                                    {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
+                                                    {{ $appointment->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
                                     {{ ucfirst($appointment->status) }}
                                 </span>
+
                                 @if($appointment->status === 'pending')
                                     <button wire:click="confirmAppointment({{ $appointment->id }})"
-                                        class="btn-barber text-white px-5 py-2 rounded-lg font-semibold shadow-md">
+                                        class="btn-barber text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
                                         <i class="fas fa-check mr-2"></i>Confirmar
+                                    </button>
+                                    <button wire:click="cancelAppointment({{ $appointment->id }})"
+                                        class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+                                        <i class="fas fa-times mr-2"></i>Cancelar
                                     </button>
                                 @elseif($appointment->status === 'confirmed')
                                     <button wire:click="completeAppointment({{ $appointment->id }})"
-                                        class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+                                        class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
                                         <i class="fas fa-check-double mr-2"></i>Completar
                                     </button>
+                                    <button wire:click="cancelAppointment({{ $appointment->id }})"
+                                        class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:shadow-lg transition">
+                                        <i class="fas fa-times mr-2"></i>Cancelar
+                                    </button>
+                                @elseif($appointment->status === 'completed')
+                                    <span class="text-sm text-gray-500 italic">
+                                        <i class="fas fa-check-circle mr-1"></i>Completada
+                                    </span>
+                                @elseif($appointment->status === 'cancelled')
+                                    <span class="text-sm text-gray-500 italic">
+                                        <i class="fas fa-ban mr-1"></i>Cancelada
+                                    </span>
                                 @endif
                             </div>
                         </div>
@@ -142,7 +161,11 @@
         @if($upcomingAppointments->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 @foreach($upcomingAppointments as $appointment)
-                    <div class="bg-white border-2 border-gray-100 p-4 rounded-xl hover:border-yellow-500 transition">
+                    <div class="bg-white border-2 p-5 rounded-xl shadow-sm hover:shadow-md transition
+                                {{ $appointment->status === 'pending' ? 'border-yellow-300' : '' }}
+                                {{ $appointment->status === 'confirmed' ? 'border-green-300' : '' }}
+                                {{ $appointment->status === 'completed' ? 'border-blue-300' : '' }}
+                                {{ $appointment->status === 'cancelled' ? 'border-red-300' : '' }}">
                         <div class="flex justify-between items-start mb-3">
                             <div>
                                 <p class="font-bold text-gray-800 text-lg">{{ $appointment->client->name }}</p>
@@ -151,13 +174,40 @@
                                     {{ $appointment->service->name }}
                                 </p>
                             </div>
-                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700">
-                                {{ $appointment->status }}
+                            <span class="px-3 py-1 rounded-full text-xs font-bold
+                                        {{ $appointment->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : '' }}
+                                        {{ $appointment->status === 'confirmed' ? 'bg-green-100 text-green-800' : '' }}
+                                        {{ $appointment->status === 'completed' ? 'bg-blue-100 text-blue-800' : '' }}
+                                        {{ $appointment->status === 'cancelled' ? 'bg-red-100 text-red-800' : '' }}">
+                                {{ ucfirst($appointment->status) }}
                             </span>
                         </div>
-                        <div class="flex items-center text-sm text-gray-600">
+                        <div class="flex items-center text-sm text-gray-600 mb-3">
                             <i class="far fa-calendar mr-2 gold-accent"></i>
                             <span class="font-semibold">{{ $appointment->scheduled_at->format('d/m/Y H:i') }}</span>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex gap-2 mt-3">
+                            @if($appointment->status === 'pending')
+                                <button wire:click="confirmAppointment({{ $appointment->id }})"
+                                    class="flex-1 btn-barber text-white px-3 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition">
+                                    <i class="fas fa-check mr-1"></i>Confirmar
+                                </button>
+                                <button wire:click="cancelAppointment({{ $appointment->id }})"
+                                    class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition">
+                                    <i class="fas fa-times mr-1"></i>Cancelar
+                                </button>
+                            @elseif($appointment->status === 'confirmed')
+                                <button wire:click="completeAppointment({{ $appointment->id }})"
+                                    class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition">
+                                    <i class="fas fa-check-double mr-1"></i>Completar
+                                </button>
+                                <button wire:click="cancelAppointment({{ $appointment->id }})"
+                                    class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-2 rounded-lg text-sm font-semibold shadow-md hover:shadow-lg transition">
+                                    <i class="fas fa-times mr-1"></i>Cancelar
+                                </button>
+                            @endif
                         </div>
                     </div>
                 @endforeach
